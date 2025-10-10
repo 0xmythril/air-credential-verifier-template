@@ -22,7 +22,7 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   title: env.NEXT_PUBLIC_SITE_NAME,
-  description: env.NEXT_PUBLIC_SITE_DESCRIPTION,
+  description: "Verify once and unlock trading rewards",
 };
 
 export default async function RootLayout({

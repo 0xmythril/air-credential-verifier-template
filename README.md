@@ -79,9 +79,9 @@ Once your environment variables are set, you should be able to verify credential
 | `NEXT_PUBLIC_VERIFIER_PROGRAM_ID`  | Verification program ID.                                                   |
 | `NEXT_PUBLIC_ISSUER_URL`           | URL where users can obtain credentials if they don't have any to verify. |
 | `NEXT_PUBLIC_SITE_NAME`            | Site/application name.                                                     |
-| `NEXT_PUBLIC_SITE_DESCRIPTION`     | Site description text.                                                     |
 | `NEXT_PUBLIC_RETURN_SITE_NAME`     | (Optional) Display name of your application that users will return to after verification. Defaults to `NEXT_PUBLIC_SITE_NAME`. |
 | `NEXT_PUBLIC_RETURN_URL`           | (Optional) Redirect URL where users will be sent after completing verification. Defaults to `/`. |
+| `NEXT_PUBLIC_REFERRAL_URL`         | Referral landing page URL used in the success modal.                      |
 | `NEXT_PUBLIC_BUILD_ENV`            | Build environment (`production`, `sandbox`, `staging`).                   |
 | `NEXT_PUBLIC_THEME`                | The theme of the app (`light`, `dark`, `system`).                         |
 
@@ -123,7 +123,7 @@ npm start
 
 Click the button below to deploy directly to Vercel:
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/MocaNetwork/air-credential-verifier-example&env=NEXT_PUBLIC_PARTNER_ID,NEXT_PUBLIC_VERIFIER_PROGRAM_ID,NEXT_PUBLIC_ISSUER_URL,NEXT_PUBLIC_SITE_NAME,NEXT_PUBLIC_SITE_DESCRIPTION,NEXT_PUBLIC_BUILD_ENV,NEXT_PUBLIC_THEME,PARTNER_PRIVATE_KEY,SIGNING_ALGORITHM&envDescription=Configure%20your%20AIR%20Kit%20credentials%20and%20application%20settings&envLink=https://github.com/MocaNetwork/air-credential-verifier-example/blob/main/README.md)
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/MocaNetwork/air-credential-verifier-example&env=NEXT_PUBLIC_PARTNER_ID,NEXT_PUBLIC_VERIFIER_PROGRAM_ID,NEXT_PUBLIC_ISSUER_URL,NEXT_PUBLIC_SITE_NAME,NEXT_PUBLIC_BUILD_ENV,NEXT_PUBLIC_THEME,PARTNER_PRIVATE_KEY,SIGNING_ALGORITHM&envDescription=Configure%20your%20AIR%20Kit%20credentials%20and%20application%20settings&envLink=https://github.com/MocaNetwork/air-credential-verifier-example/blob/main/README.md)
 
 ### Customizing the UI
 

@@ -128,4 +128,25 @@
   body {
     @apply bg-background text-foreground font-sans;
   }
+
+  @keyframes shimmer {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  @keyframes glowPulse {
+    0%,
+    100% {
+      opacity: 0.45;
+      filter: blur(24px);
+    }
+    50% {
+      opacity: 0.85;
+      filter: blur(18px);
+    }
+  }
 }
