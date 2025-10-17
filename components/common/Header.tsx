@@ -30,7 +30,7 @@ export const Header = () => {
           className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
         >
           <Image
-            src="/logo.svg"
+            src="/air-logo.svg"
             alt="Logo"
             width={28}
             height={28}
