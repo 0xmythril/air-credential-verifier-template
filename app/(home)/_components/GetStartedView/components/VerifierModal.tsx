@@ -49,7 +49,10 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
   };
 
   const buildReferralUrl = (airAddress: string | null): string => {
-    return `${env.NEXT_PUBLIC_REFERRAL_URL}${airAddress || ""}`;
+    console.log("Building referral URL with AIR address:", airAddress);
+    const url = `${env.NEXT_PUBLIC_REFERRAL_URL}${airAddress || ""}`;
+    console.log("Generated referral URL:", url);
+    return url;
   };
 
   const onContinue = async () => {
@@ -81,6 +84,7 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
         // Extract AIR address from result
         const address = result.address || result.airAddress || null;
         setUserAirAddress(address);
+        console.log("Extracted AIR address:", address);
 
         if (result.authStatus === "COMPLIANT") {
           updateStatus("success");
@@ -98,6 +102,7 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
 
   const isLoading = status === "loading" || !isInitialized;
   const referralUrl = buildReferralUrl(userAirAddress);
+  console.log("Final referral URL:", referralUrl);
 
   return (
     <div className="container max-w-lg">
