@@ -96,24 +96,24 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
         let address = null;
         if (result.address) {
           address = result.address;
-          console.log("✓ Found address at result.address:", address);
+          console.log("Found address at result.address:", address);
         } else if (result.airAddress) {
           address = result.airAddress;
-          console.log("✓ Found address at result.airAddress:", address);
+          console.log("Found address at result.airAddress:", address);
         } else if (result.walletAddress) {
           address = result.walletAddress;
-          console.log("✓ Found address at result.walletAddress:", address);
+          console.log("Found address at result.walletAddress:", address);
         } else if (result.userAddress) {
           address = result.userAddress;
-          console.log("✓ Found address at result.userAddress:", address);
+          console.log("Found address at result.userAddress:", address);
         } else if (result.abstractAccountAddress) {
           address = result.abstractAccountAddress;
-          console.log("✓ Found address at result.abstractAccountAddress:", address);
+          console.log("Found address at result.abstractAccountAddress:", address);
         } else if (result.user) {
           address = result.user?.address || result.user?.airAddress;
-          console.log("✓ Found address at result.user:", address);
+          console.log("Found address at result.user:", address);
         } else {
-          console.warn("✗ Could not find address property in result object");
+          console.warn("Could not find address property in result object");
           console.warn("Available properties:", Object.keys(result));
         }
         
@@ -137,19 +137,20 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
 
   const isLoading = status === "loading" || !isInitialized;
   const referralUrl = buildReferralUrl(userAirAddress, status === "success");
+  
   useEffect(() => {
     console.clear();
     console.log("%c╔════════════════════════════════════════╗", "color: #00AA00; font-weight: bold;");
     console.log("%c║  REFERRAL URL - PREVIEW/DEBUG INFO    ║", "color: #00AA00; font-weight: bold;");
     console.log("%c╚════════════════════════════════════════╝", "color: #00AA00; font-weight: bold;");
     console.log("Status:", status);
-    console.log("AIR Address:", userAirAddress ? userAirAddress : "❌ null");
-    console.log("Preview Mode:", shouldPreviewSuccess ? "✓ SUCCESS" : shouldPreviewFailure ? "✓ FAILURE" : "None");
+    console.log("AIR Address:", userAirAddress ? userAirAddress : "(null)");
+    console.log("Preview Mode:", shouldPreviewSuccess ? "SUCCESS" : shouldPreviewFailure ? "FAILURE" : "None");
     console.log("%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━", "color: #00AA00;");
     console.log("%cREFERRAL URL:", "font-weight: bold; color: #00AA00; font-size: 14px;");
     console.log(referralUrl);
     console.log("%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━", "color: #00AA00;");
-  }, [status, userAirAddress, referralUrl]);
+  }, [status, userAirAddress, referralUrl, shouldPreviewSuccess, shouldPreviewFailure]);
 
   return (
     <div className="container max-w-lg">
@@ -165,10 +166,10 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
 
               <div className="flex flex-col items-center gap-4 text-center">
                 <h3 className="text-3xl font-bold tracking-tight text-secondary-foreground">
-                  You've Earned 30% AIR SP Rebate
+                  You have earned 30% AIR SP
                 </h3>
                 <p className="text-base text-muted-foreground leading-relaxed">
-                  Sign up with this link and we'll send you 30% of your Surfshark purchase in the form of AIR SP once your purchase is confirmed.
+                  Sign up with this link and we will send you 30% of your purchase airdropped to you in AIR SP tokens.
                 </p>
               </div>
 
@@ -199,7 +200,7 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
                   Almost There
                 </h3>
                 <p className="text-base text-muted-foreground leading-relaxed">
-                  Your X account doesn't meet the 100+ followers requirement. You can still sign up with your referral link and enjoy Surfshark VPN.
+                  Your X account does not meet the 100+ followers requirement. You can still sign up with your referral link and enjoy Surfshark VPN.
                 </p>
               </div>
 

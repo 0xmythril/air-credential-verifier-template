@@ -2,7 +2,6 @@ import { DebuggingInfo, VerifierModal } from "./components";
 import type { VerificationStatus } from "./components";
 import { ShieldCheck, Sparkles, Zap } from "lucide-react";
 import { useState } from "react";
-import Image from "next/image";
 
 export const GetStartedView = () => {
   const [status, setStatus] = useState<VerificationStatus>("initial");
