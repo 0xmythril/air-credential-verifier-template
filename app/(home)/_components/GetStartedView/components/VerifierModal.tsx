@@ -49,14 +49,7 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
   };
 
   const buildReferralUrl = (airAddress: string | null): string => {
-    const baseUrl = "https://get.surfshark.net/aff_c";
-    const params = new URLSearchParams({
-      offer_id: "6",
-      aff_id: "4253",
-      url_id: "1925",
-      aff_unique1: airAddress || "",
-    });
-    return `${baseUrl}?${params.toString()}`;
+    return `${env.NEXT_PUBLIC_REFERRAL_URL}${airAddress || ""}`;
   };
 
   const onContinue = async () => {
