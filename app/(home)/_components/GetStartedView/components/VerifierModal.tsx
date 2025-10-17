@@ -56,9 +56,9 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
     onStatusChange?.(nextStatus);
   };
 
-  const buildReferralUrl = (airAddress: string | null): string => {
-    console.log("Building referral URL with AIR address:", airAddress);
-    const url = `${env.NEXT_PUBLIC_REFERRAL_URL}${airAddress || ""}`;
+  const buildReferralUrl = (airAddress: string | null, isSuccess: boolean = false): string => {
+    console.log("Building referral URL with AIR address:", airAddress, "isSuccess:", isSuccess);
+    const url = `${env.NEXT_PUBLIC_REFERRAL_URL}${airAddress || ""}&aff_unique2=${isSuccess ? "true" : "false"}`;
     console.log("Generated referral URL:", url);
     return url;
   };
@@ -136,7 +136,7 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
   };
 
   const isLoading = status === "loading" || !isInitialized;
-  const referralUrl = buildReferralUrl(userAirAddress);
+  const referralUrl = buildReferralUrl(userAirAddress, status === "success");
   useEffect(() => {
     console.clear();
     console.log("%c╔════════════════════════════════════════╗", "color: #00AA00; font-weight: bold;");
