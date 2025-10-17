@@ -1,6 +1,6 @@
 import { DebuggingInfo, VerifierModal } from "./components";
 import type { VerificationStatus } from "./components";
-import { ArrowRight, ShieldCheck, Sparkles } from "lucide-react";
+import { ExternalLink, ShieldCheck, Sparkles, Zap } from "lucide-react";
 import { useState } from "react";
 
 export const GetStartedView = () => {
@@ -15,50 +15,53 @@ export const GetStartedView = () => {
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.12),_transparent_55%)]" />
       </div>
 
-      <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-6xl flex-col justify-center px-6 py-16 lg:px-12">
+      <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-5xl flex-col justify-center px-6 py-16 lg:px-12">
         <div
           className={
             showHero
-              ? "grid items-center gap-12 lg:grid-cols-[minmax(0,1.15fr)_minmax(0,0.85fr)]"
+              ? "grid items-center gap-12 lg:grid-cols-[1fr_auto]"
               : "flex justify-center"
           }
         >
           {showHero && (
             <div className="flex flex-col gap-8">
-              <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.35em] text-white/80 backdrop-blur">
-                <Sparkles className="h-4 w-4" />
-                Powered by AIR
+              <div className="inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.35em] text-blue-200 backdrop-blur w-fit">
+                <Sparkles className="h-3.5 w-3.5" />
+                Twitter x Surfshark
               </div>
 
-              <div className="space-y-5 text-balance">
-                <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">
-                  Verify your Twitter account with over 100 followers to get 30% rebate in AIR SP for your Surfshark VPN purchase
+              <div className="space-y-4">
+                <h1 className="text-5xl font-bold tracking-tight text-white lg:text-6xl">
+                  Get 30% AIR SP Rebate
                 </h1>
-                <p className="max-w-xl text-base text-white/80 sm:text-lg">
-                  Quick verification. Exclusive AIR rewards for Surfshark subscribers.
+                <p className="text-lg text-white/70">
+                  Verify your Twitter account and unlock instant AIR rewards on every Surfshark VPN purchase.
+                </p>
+                <p className="text-sm text-white/50">
+                  Requires 100+ Twitter followers to claim the full 30% rebate.
                 </p>
               </div>
 
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div className="flex items-start gap-3 rounded-2xl border border-white/15 bg-black/20 p-4 backdrop-blur">
-                  <div className="mt-1 rounded-full bg-primary/20 p-2">
-                    <ShieldCheck className="h-4 w-4 text-primary" />
+              <div className="grid gap-3 sm:grid-cols-2">
+                <div className="flex items-start gap-3 rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur hover:border-white/20 transition">
+                  <div className="mt-1 rounded-lg bg-blue-500/20 p-2">
+                    <ShieldCheck className="h-4 w-4 text-blue-300" />
                   </div>
-                  <div className="space-y-1 text-sm">
-                    <p className="font-semibold text-white">Twitter Verification</p>
-                    <p className="text-white/70">
-                      Verify your Twitter account and unlock 30% AIR SP rebate on every Surfshark VPN purchase.
+                  <div className="space-y-1">
+                    <p className="font-semibold text-white text-sm">Verified & Secure</p>
+                    <p className="text-white/60 text-xs">
+                      One-click Twitter verification powered by AIR credentials.
                     </p>
                   </div>
                 </div>
-                <div className="flex items-start gap-3 rounded-2xl border border-white/15 bg-black/20 p-4 backdrop-blur">
-                  <div className="mt-1 rounded-full bg-primary/20 p-2">
-                    <ArrowRight className="h-4 w-4 text-primary" />
+                <div className="flex items-start gap-3 rounded-xl border border-white/10 bg-white/5 p-4 backdrop-blur hover:border-white/20 transition">
+                  <div className="mt-1 rounded-lg bg-blue-500/20 p-2">
+                    <Zap className="h-4 w-4 text-blue-300" />
                   </div>
-                  <div className="space-y-1 text-sm">
-                    <p className="font-semibold text-white">Instant AIR Rewards</p>
-                    <p className="text-white/70">
-                      30% of your Surfshark purchase amount will be airdropped to you in AIR SP tokens.
+                  <div className="space-y-1">
+                    <p className="font-semibold text-white text-sm">Instant Rewards</p>
+                    <p className="text-white/60 text-xs">
+                      30% of your Surfshark purchase airdropped as AIR SP tokens.
                     </p>
                   </div>
                 </div>
@@ -66,13 +69,13 @@ export const GetStartedView = () => {
             </div>
           )}
 
-          <div className="flex justify-center lg:justify-end">
+          <div className="flex justify-center lg:justify-start">
             <VerifierModal onStatusChange={setStatus} />
           </div>
         </div>
 
         {showHero && (
-          <div className="mt-12 flex justify-center">
+          <div className="mt-16 flex justify-center">
             <DebuggingInfo />
           </div>
         )}
