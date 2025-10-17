@@ -184,8 +184,8 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
                 <Image
                   src="/x-logo/logo.svg"
                   alt="X"
-                  width={45}
-                  height={45}
+                  width={33}
+                  height={33}
                   className="object-contain"
                 />
               </div>
