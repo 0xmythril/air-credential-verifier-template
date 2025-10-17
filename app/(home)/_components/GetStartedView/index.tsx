@@ -1,6 +1,6 @@
 import { DebuggingInfo, VerifierModal } from "./components";
 import type { VerificationStatus } from "./components";
-import { ExternalLink, ShieldCheck, Sparkles, Zap } from "lucide-react";
+import { ShieldCheck, Sparkles, Zap } from "lucide-react";
 import { useState } from "react";
 
 export const GetStartedView = () => {
@@ -25,17 +25,22 @@ export const GetStartedView = () => {
         >
           {showHero && (
             <div className="flex flex-col gap-8">
-              <div className="inline-flex items-center gap-2 rounded-full border border-blue-500/30 bg-blue-500/10 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.35em] text-blue-200 backdrop-blur w-fit">
-                <Sparkles className="h-3.5 w-3.5" />
-                Twitter x Surfshark
+              <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.35em] text-white/80 backdrop-blur w-fit">
+                <Sparkles className="h-4 w-4" />
+                Powered by AIR
               </div>
 
-              <div className="space-y-4">
+              <div className="space-y-3">
+                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-white/5 border border-white/10 w-fit">
+                  <span className="text-xs font-medium text-white/70">Twitter</span>
+                  <span className="text-xs text-white/50">+</span>
+                  <span className="text-xs font-medium text-white/70">Surfshark VPN</span>
+                </div>
                 <h1 className="text-5xl font-bold tracking-tight text-white lg:text-6xl">
                   Get 30% AIR SP Rebate
                 </h1>
                 <p className="text-lg text-white/70">
-                  Verify your Twitter account and unlock instant AIR rewards on every Surfshark VPN purchase.
+                  Verify your Twitter account and unlock instant AIR rewards on your next Surfshark VPN purchase.
                 </p>
                 <p className="text-sm text-white/50">
                   Requires 100+ Twitter followers to claim the full 30% rebate.
