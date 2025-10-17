@@ -165,10 +165,10 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
 
               <div className="flex flex-col items-center gap-4 text-center">
                 <h3 className="text-3xl font-bold tracking-tight text-secondary-foreground">
-                  You've Earned 30% AIR SP
+                  You've Earned 30% AIR SP Rebate
                 </h3>
                 <p className="text-base text-muted-foreground leading-relaxed">
-                  Sign up with this link and we'll airdrop 30% of your Surfshark purchase to you in AIR SP tokens.
+                  Sign up with this link and we'll send you 30% of your Surfshark purchase in the form of AIR SP once your purchase is confirmed.
                 </p>
               </div>
 
