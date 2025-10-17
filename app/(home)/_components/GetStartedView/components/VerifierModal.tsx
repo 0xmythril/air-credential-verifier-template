@@ -13,7 +13,7 @@ type AuthTokenResponse = {
   authToken: string;
 };
 
-export type VerificationStatus = "success" | "error" | "loading" | "initial";
+export type VerificationStatus = "success" | "error" | "loading" | "initial" | "failure";
 
 type VerifierModalProps = {
   onStatusChange?: (status: VerificationStatus) => void;
@@ -22,17 +22,24 @@ type VerifierModalProps = {
 export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
   const { airService, isInitialized } = useAirkit();
   const searchParams = useSearchParams();
-  const shouldPreviewReward =
+  const shouldPreviewSuccess =
+    searchParams.get("previewSuccess")?.toLowerCase() === "true" ||
     searchParams.get("previewReward")?.toLowerCase() === "true";
-  const [status, setStatus] = useState<VerificationStatus>(() =>
-    shouldPreviewReward ? "success" : "initial"
-  );
+  const shouldPreviewFailure =
+    searchParams.get("previewFailure")?.toLowerCase() === "true";
+  const [status, setStatus] = useState<VerificationStatus>(() => {
+    if (shouldPreviewSuccess) return "success";
+    if (shouldPreviewFailure) return "failure";
+    return "initial";
+  });
 
   useEffect(() => {
-    const next = shouldPreviewReward ? "success" : "initial";
+    let next: VerificationStatus = "initial";
+    if (shouldPreviewSuccess) next = "success";
+    if (shouldPreviewFailure) next = "failure";
     setStatus(next);
     onStatusChange?.(next);
-  }, [onStatusChange, shouldPreviewReward]);
+  }, [onStatusChange, shouldPreviewSuccess, shouldPreviewFailure]);
 
   const updateStatus = (nextStatus: VerificationStatus) => {
     setStatus(nextStatus);
@@ -64,7 +71,7 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
         });
         updateStatus("success");
       } catch (error) {
-        updateStatus("error");
+        updateStatus("failure");
         throw error;
       }
     } catch (error) {
@@ -108,6 +115,34 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
                 <p className="text-sm text-muted-foreground">
                   Secure 10% back on your trading fees when you sign up through this referral portal.
                 </p>
+              </Link>
+            </div>
+          </div>
+        </div>
+      ) : status === "failure" ? (
+        <div className="flex justify-center">
+          <div className="relative w-full max-w-[520px] overflow-hidden rounded-[28px] border border-destructive/20 bg-gradient-to-br from-destructive/5 via-destructive/10 to-destructive/20 shadow-2xl">
+            <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-destructive/30 blur-3xl" />
+            <div className="relative flex flex-col items-center gap-6 px-10 py-12 text-secondary-foreground">
+              <div className="flex flex-col items-center gap-3 text-center">
+                <h3 className="text-2xl font-bold tracking-tight text-secondary-foreground">
+                  Unfortunately you are not eligible for the 10% rebate trading on Aster.
+                </h3>
+                <p className="max-w-[400px] text-sm text-muted-foreground">
+                  Please make sure you have a greater than 500 Ethos Score and try again. If this is a mistake please re-issue your credential again.
+                </p>
+              </div>
+
+              <Link
+                href={env.NEXT_PUBLIC_ISSUER_URL}
+                target="_blank"
+                rel="noreferrer"
+                className="group inline-flex w-full flex-col items-center gap-3 rounded-2xl border border-primary/40 bg-background/70 p-6 text-secondary-foreground transition hover:border-primary/80 hover:bg-background"
+              >
+                <div className="flex w-full items-center justify-between text-lg font-semibold tracking-wide text-primary">
+                  <span>Re-issue my Ethos credential</span>
+                  <ExternalLink className="h-5 w-5 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                </div>
               </Link>
             </div>
           </div>

@@ -5,7 +5,7 @@ import { useState } from "react";
 
 export const GetStartedView = () => {
   const [status, setStatus] = useState<VerificationStatus>("initial");
-  const showHero = status !== "success";
+  const showHero = status !== "success" && status !== "failure";
 
   return (
     <div className="relative min-h-screen overflow-hidden bg-[#05060F] text-white">
