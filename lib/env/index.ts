@@ -13,6 +13,10 @@ export const env = createEnv({
     NEXT_PUBLIC_VERIFIER_PROGRAM_ID: z.string(),
     NEXT_PUBLIC_ISSUER_URL: z.url(),
     NEXT_PUBLIC_SITE_NAME: z.string(),
+    NEXT_PUBLIC_SITE_DESCRIPTION: z.string().default(
+      "Verify once and unlock trading rewards",
+    ),
+    NEXT_PUBLIC_SITE_URL: z.string().url().optional(),
     NEXT_PUBLIC_RETURN_SITE_NAME: z.string(),
     NEXT_PUBLIC_RETURN_URL: z.url().default("/"),
     NEXT_PUBLIC_BUILD_ENV: z.enum(BUILD_ENV),
@@ -25,6 +29,9 @@ export const env = createEnv({
       process.env.NEXT_PUBLIC_VERIFIER_PROGRAM_ID,
     NEXT_PUBLIC_ISSUER_URL: process.env.NEXT_PUBLIC_ISSUER_URL,
     NEXT_PUBLIC_SITE_NAME: process.env.NEXT_PUBLIC_SITE_NAME,
+    NEXT_PUBLIC_SITE_DESCRIPTION:
+      process.env.NEXT_PUBLIC_SITE_DESCRIPTION,
+    NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL,
     NEXT_PUBLIC_RETURN_SITE_NAME:
       process.env.NEXT_PUBLIC_RETURN_SITE_NAME ??
       process.env.NEXT_PUBLIC_SITE_NAME,

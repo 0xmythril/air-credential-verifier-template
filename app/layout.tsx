@@ -20,9 +20,38 @@ const poppins = Poppins({
   weight: ["400", "500", "600", "700"],
 });
 
+const siteName = env.NEXT_PUBLIC_SITE_NAME;
+const siteDescription = env.NEXT_PUBLIC_SITE_DESCRIPTION;
+const siteUrl = env.NEXT_PUBLIC_SITE_URL;
+
 export const metadata: Metadata = {
-  title: env.NEXT_PUBLIC_SITE_NAME,
-  description: "Verify once and unlock trading rewards",
+  metadataBase: siteUrl ? new URL(siteUrl) : undefined,
+  title: {
+    default: siteName,
+    template: `%s | ${siteName}`,
+  },
+  description: siteDescription,
+  applicationName: siteName,
+  appleWebApp: {
+    capable: true,
+    title: siteName,
+  },
+  openGraph: {
+    siteName,
+    title: siteName,
+    description: siteDescription,
+    url: siteUrl,
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    site: siteName,
+    title: siteName,
+    description: siteDescription,
+  },
+  alternates: {
+    canonical: siteUrl,
+  },
 };
 
 export default async function RootLayout({
