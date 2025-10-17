@@ -180,7 +180,7 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
           <div className="rounded-3xl flex flex-col items-center gap-8">
             {/* Logo Partnership Display - ONLY in initial state */}
             <div className="flex items-center gap-6">
-              <div className="h-16 w-16 flex items-center justify-center rounded-2xl bg-white/5 border border-white/10 p-3">
+              <div className="h-20 w-20 flex items-center justify-center rounded-2xl bg-white/5 border border-white/10 p-3">
                 <Image
                   src="/x-logo/logo.svg"
                   alt="X"
