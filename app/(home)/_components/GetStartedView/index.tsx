@@ -1,6 +1,6 @@
 import { DebuggingInfo, VerifierModal } from "./components";
 import type { VerificationStatus } from "./components";
-import { ShieldCheck, Zap } from "lucide-react";
+import { ShieldCheck, Sparkles, Zap } from "lucide-react";
 import { useState } from "react";
 import Image from "next/image";
 
@@ -26,31 +26,10 @@ export const GetStartedView = () => {
         >
           {showHero && (
             <div className="flex flex-col gap-10">
-              {/* Logo Partnership Header */}
-              <div className="flex items-center gap-6">
-                <div className="h-16 w-16 flex items-center justify-center rounded-2xl bg-white/5 border border-white/10 p-2">
-                  <Image
-                    src="/x-logo/logo.svg"
-                    alt="X"
-                    width={56}
-                    height={56}
-                    className="object-contain"
-                  />
-                </div>
-                <div className="text-3xl font-light text-white/40">×</div>
-                <div className="h-16 w-16 flex items-center justify-center rounded-2xl bg-white/5 border border-white/10 p-2">
-                  <Image
-                    src="/surfshark-logo/Surfshark_Symbol_Pos.svg"
-                    alt="Surfshark"
-                    width={56}
-                    height={56}
-                    className="object-contain"
-                  />
-                </div>
-                <div className="text-3xl font-light text-white/40">×</div>
-                <div className="h-16 w-16 flex items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500/30 to-cyan-500/30 border border-blue-500/30 p-2">
-                  <span className="text-lg font-bold text-blue-300">AIR</span>
-                </div>
+              {/* Powered by AIR Badge */}
+              <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.35em] text-white/80 backdrop-blur w-fit">
+                <Sparkles className="h-4 w-4" />
+                Powered by AIR
               </div>
 
               {/* Main Content */}

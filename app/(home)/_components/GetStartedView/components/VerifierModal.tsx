@@ -113,33 +113,6 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
           <div className="relative w-full overflow-hidden rounded-[32px] border border-primary/20 bg-gradient-to-br from-primary/5 via-primary/10 to-primary/20 text-primary-foreground shadow-2xl">
             <div className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-primary/30 blur-3xl" />
             <div className="relative flex flex-col items-center gap-8 px-8 py-16 text-secondary-foreground">
-              {/* Logo Partnership Header */}
-              <div className="flex items-center gap-4">
-                <div className="h-14 w-14 flex items-center justify-center rounded-2xl bg-white/10 border border-white/20 p-2">
-                  <Image
-                    src="/x-logo/logo.svg"
-                    alt="X"
-                    width={48}
-                    height={48}
-                    className="object-contain"
-                  />
-                </div>
-                <span className="text-2xl font-light text-white/30">+</span>
-                <div className="h-14 w-14 flex items-center justify-center rounded-2xl bg-white/10 border border-white/20 p-2">
-                  <Image
-                    src="/surfshark-logo/Surfshark_Symbol_Pos.svg"
-                    alt="Surfshark"
-                    width={48}
-                    height={48}
-                    className="object-contain"
-                  />
-                </div>
-                <span className="text-2xl font-light text-white/30">+</span>
-                <div className="h-14 w-14 flex items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500/40 to-cyan-500/40 border border-blue-500/40 p-2">
-                  <span className="text-sm font-bold text-blue-200">AIR</span>
-                </div>
-              </div>
-
               <div className="flex items-center gap-2 rounded-full border border-primary/40 bg-background/80 px-4 py-2 text-xs font-semibold uppercase tracking-[0.35em] text-primary/80 shadow-sm backdrop-blur">
                 <Sparkles className="h-4 w-4 animate-pulse" />
                 Verified
@@ -176,33 +149,6 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
           <div className="relative w-full overflow-hidden rounded-[32px] border border-destructive/20 bg-gradient-to-br from-destructive/5 via-destructive/10 to-destructive/20 shadow-2xl">
             <div className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-destructive/30 blur-3xl" />
             <div className="relative flex flex-col items-center gap-8 px-8 py-16 text-secondary-foreground">
-              {/* Logo Partnership Header */}
-              <div className="flex items-center gap-4">
-                <div className="h-14 w-14 flex items-center justify-center rounded-2xl bg-white/10 border border-white/20 p-2 opacity-40">
-                  <Image
-                    src="/x-logo/logo.svg"
-                    alt="X"
-                    width={48}
-                    height={48}
-                    className="object-contain"
-                  />
-                </div>
-                <span className="text-2xl font-light text-white/30">+</span>
-                <div className="h-14 w-14 flex items-center justify-center rounded-2xl bg-white/10 border border-white/20 p-2 opacity-40">
-                  <Image
-                    src="/surfshark-logo/Surfshark_Symbol_Pos.svg"
-                    alt="Surfshark"
-                    width={48}
-                    height={48}
-                    className="object-contain"
-                  />
-                </div>
-                <span className="text-2xl font-light text-white/30">+</span>
-                <div className="h-14 w-14 flex items-center justify-center rounded-2xl bg-white/10 border border-white/20 p-2 opacity-40">
-                  <span className="text-sm font-bold text-white/60">AIR</span>
-                </div>
-              </div>
-
               <div className="flex flex-col items-center gap-4 text-center">
                 <h3 className="text-3xl font-bold tracking-tight text-secondary-foreground">
                   Almost There
@@ -231,8 +177,8 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
         </div>
       ) : (
         <div className="flex flex-col w-full gap-6">
-          <div className="rounded-3xl flex flex-col items-center gap-6">
-            {/* Logo Partnership Display */}
+          <div className="rounded-3xl flex flex-col items-center gap-8">
+            {/* Logo Partnership Display - ONLY in initial state */}
             <div className="flex items-center gap-6">
               <div className="h-20 w-20 flex items-center justify-center rounded-2xl bg-white/5 border border-white/10 p-3">
                 <Image
@@ -243,7 +189,7 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
                   className="object-contain"
                 />
               </div>
-              <div className="text-3xl font-light text-white/40">+</div>
+              <div className="text-4xl font-light text-white/30">+</div>
               <div className="h-20 w-20 flex items-center justify-center rounded-2xl bg-white/5 border border-white/10 p-3">
                 <Image
                   src="/surfshark-logo/Surfshark_Symbol_Pos.svg"
@@ -252,10 +198,6 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
                   height={64}
                   className="object-contain"
                 />
-              </div>
-              <div className="text-3xl font-light text-white/40">+</div>
-              <div className="h-20 w-20 flex items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500/30 to-cyan-500/30 border border-blue-500/30 p-3">
-                <span className="text-xl font-bold text-blue-300">AIR</span>
               </div>
             </div>
 
