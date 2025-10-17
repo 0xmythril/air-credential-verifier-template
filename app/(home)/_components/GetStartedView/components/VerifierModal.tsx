@@ -64,12 +64,20 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
           await axios.get<AuthTokenResponse>("/api/auth-token")
         ).data;
 
-        await airService.verifyCredential({
+        const result = await airService.verifyCredential({
           authToken,
           programId: env.NEXT_PUBLIC_VERIFIER_PROGRAM_ID,
           redirectUrl: env.NEXT_PUBLIC_ISSUER_URL,
         });
-        updateStatus("success");
+
+        console.log("Verification result:", result);
+
+        if (result.authStatus === "COMPLIANT") {
+          updateStatus("success");
+        } else {
+          // NON_COMPLIANT, PENDING, REVOKING, REVOKED, EXPIRED, NOT_FOUND
+          updateStatus("failure");
+        }
       } catch (error) {
         updateStatus("failure");
         throw error;
