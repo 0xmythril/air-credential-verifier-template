@@ -21,7 +21,7 @@ type VerifierModalProps = {
 };
 
 export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
-  const { airService, isInitialized } = useAirkit();
+  const { airService, isInitialized, isLoggedIn, loginResult } = useAirkit();
   const searchParams = useSearchParams();
   const shouldPreviewSuccess =
     searchParams.get("previewSuccess")?.toLowerCase() === "true" ||
@@ -42,6 +42,14 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
     setStatus(next);
     onStatusChange?.(next);
   }, [onStatusChange, shouldPreviewSuccess, shouldPreviewFailure]);
+
+  // Extract AIR address from login result if already logged in
+  useEffect(() => {
+    if (isLoggedIn && loginResult?.abstractAccountAddress) {
+      setUserAirAddress(loginResult.abstractAccountAddress);
+      console.log("Pre-populated AIR address from loginResult:", loginResult.abstractAccountAddress);
+    }
+  }, [isLoggedIn, loginResult]);
 
   const updateStatus = (nextStatus: VerificationStatus) => {
     setStatus(nextStatus);
