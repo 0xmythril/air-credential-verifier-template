@@ -79,12 +79,39 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
           redirectUrl: env.NEXT_PUBLIC_ISSUER_URL,
         });
 
-        console.log("Verification result:", result);
+        console.log("=== VERIFICATION RESULT ===");
+        console.log("Full result object:", result);
+        console.log("Result keys:", Object.keys(result));
+        console.log("Result stringify:", JSON.stringify(result, null, 2));
 
-        // Extract AIR address from result
-        const address = result.address || result.airAddress || null;
+        // Extract AIR address from result - try multiple possible property names
+        let address = null;
+        if (result.address) {
+          address = result.address;
+          console.log("✓ Found address at result.address:", address);
+        } else if (result.airAddress) {
+          address = result.airAddress;
+          console.log("✓ Found address at result.airAddress:", address);
+        } else if (result.walletAddress) {
+          address = result.walletAddress;
+          console.log("✓ Found address at result.walletAddress:", address);
+        } else if (result.userAddress) {
+          address = result.userAddress;
+          console.log("✓ Found address at result.userAddress:", address);
+        } else if (result.abstractAccountAddress) {
+          address = result.abstractAccountAddress;
+          console.log("✓ Found address at result.abstractAccountAddress:", address);
+        } else if (result.user) {
+          address = result.user?.address || result.user?.airAddress;
+          console.log("✓ Found address at result.user:", address);
+        } else {
+          console.warn("✗ Could not find address property in result object");
+          console.warn("Available properties:", Object.keys(result));
+        }
+        
         setUserAirAddress(address);
-        console.log("Extracted AIR address:", address);
+        console.log("Final extracted AIR address:", address);
+        console.log("=== END VERIFICATION RESULT ===");
 
         if (result.authStatus === "COMPLIANT") {
           updateStatus("success");
