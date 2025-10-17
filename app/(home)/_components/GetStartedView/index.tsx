@@ -2,6 +2,7 @@ import { DebuggingInfo, VerifierModal } from "./components";
 import type { VerificationStatus } from "./components";
 import { ShieldCheck, Sparkles, Zap } from "lucide-react";
 import { useState } from "react";
+import Image from "next/image";
 
 export const GetStartedView = () => {
   const [status, setStatus] = useState<VerificationStatus>("initial");
@@ -31,19 +32,37 @@ export const GetStartedView = () => {
               </div>
 
               <div className="space-y-3">
-                <div className="inline-flex items-center gap-2 px-3 py-1 rounded-lg bg-white/5 border border-white/10 w-fit">
-                  <span className="text-xs font-medium text-white/70">Twitter</span>
+                <div className="inline-flex items-center gap-2.5 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 w-fit">
+                  <div className="h-4 w-4 flex items-center justify-center">
+                    <Image
+                      src="/x-logo/logo.svg"
+                      alt="X (Twitter)"
+                      width={16}
+                      height={16}
+                      className="object-contain"
+                    />
+                  </div>
+                  <span className="text-xs font-medium text-white/70">X</span>
                   <span className="text-xs text-white/50">+</span>
-                  <span className="text-xs font-medium text-white/70">Surfshark VPN</span>
+                  <div className="h-4 w-4 flex items-center justify-center">
+                    <Image
+                      src="/surfshark-logo/Surfshark_Symbol_Pos.svg"
+                      alt="Surfshark"
+                      width={16}
+                      height={16}
+                      className="object-contain"
+                    />
+                  </div>
+                  <span className="text-xs font-medium text-white/70">Surfshark</span>
                 </div>
                 <h1 className="text-5xl font-bold tracking-tight text-white lg:text-6xl">
                   Get 30% AIR SP Rebate
                 </h1>
                 <p className="text-lg text-white/70">
-                  Verify your Twitter account and unlock instant AIR rewards on your next Surfshark VPN purchase.
+                  Verify your X account and unlock instant AIR rewards on your next Surfshark VPN purchase.
                 </p>
                 <p className="text-sm text-white/50">
-                  Requires 100+ Twitter followers to claim the full 30% rebate.
+                  Requires 100+ X followers to claim the full 30% rebate.
                 </p>
               </div>
 
@@ -55,7 +74,7 @@ export const GetStartedView = () => {
                   <div className="space-y-1">
                     <p className="font-semibold text-white text-sm">Verified & Secure</p>
                     <p className="text-white/60 text-xs">
-                      One-click Twitter verification powered by AIR credentials.
+                      One-click X verification powered by AIR credentials.
                     </p>
                   </div>
                 </div>

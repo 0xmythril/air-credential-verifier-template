@@ -6,6 +6,7 @@ import { useAirkit } from "@/lib/hooks/useAirkit";
 import axios from "axios";
 import { ExternalLink, Sparkles } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -113,6 +114,28 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
           <div className="relative w-full max-w-[520px] overflow-hidden rounded-[28px] border border-primary/20 bg-gradient-to-br from-primary/5 via-primary/10 to-primary/20 text-primary-foreground shadow-2xl">
             <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-primary/30 blur-3xl" />
             <div className="relative flex flex-col items-center gap-6 px-10 py-12 text-secondary-foreground">
+              <div className="flex items-center gap-2">
+                <div className="h-6 w-6 flex items-center justify-center">
+                  <Image
+                    src="/x-logo/logo.svg"
+                    alt="X"
+                    width={24}
+                    height={24}
+                    className="object-contain"
+                  />
+                </div>
+                <span className="text-xs font-semibold text-white/60">Verified</span>
+                <div className="h-6 w-6 flex items-center justify-center">
+                  <Image
+                    src="/surfshark-logo/Surfshark_Symbol_Pos.svg"
+                    alt="Surfshark"
+                    width={24}
+                    height={24}
+                    className="object-contain"
+                  />
+                </div>
+              </div>
+
               <div className="flex items-center gap-2 rounded-full border border-primary/40 bg-background/80 px-4 py-2 text-xs font-semibold uppercase tracking-[0.35em] text-primary/80 shadow-sm backdrop-blur">
                 <Sparkles className="h-4 w-4 animate-pulse" />
                 Reward unlocked
@@ -120,7 +143,7 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
 
               <div className="flex flex-col items-center gap-3 text-center">
                 <h3 className="text-2xl font-bold tracking-tight text-secondary-foreground">
-                  Verified! Get 30% AIR SP rebate
+                  Verified! Get 30% AIR SP Rebate
                 </h3>
                 <p className="max-w-[360px] text-sm text-muted-foreground">
                   Sign up with this link and we will send you 30% of your purchase airdropped to you in AIR SP
@@ -149,12 +172,34 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
           <div className="relative w-full max-w-[520px] overflow-hidden rounded-[28px] border border-destructive/20 bg-gradient-to-br from-destructive/5 via-destructive/10 to-destructive/20 shadow-2xl">
             <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-destructive/30 blur-3xl" />
             <div className="relative flex flex-col items-center gap-6 px-10 py-12 text-secondary-foreground">
+              <div className="flex items-center gap-2">
+                <div className="h-6 w-6 flex items-center justify-center opacity-60">
+                  <Image
+                    src="/x-logo/logo.svg"
+                    alt="X"
+                    width={24}
+                    height={24}
+                    className="object-contain"
+                  />
+                </div>
+                <span className="text-xs font-semibold text-white/60">Not verified</span>
+                <div className="h-6 w-6 flex items-center justify-center opacity-60">
+                  <Image
+                    src="/surfshark-logo/Surfshark_Symbol_Pos.svg"
+                    alt="Surfshark"
+                    width={24}
+                    height={24}
+                    className="object-contain"
+                  />
+                </div>
+              </div>
+
               <div className="flex flex-col items-center gap-3 text-center">
                 <h3 className="text-2xl font-bold tracking-tight text-secondary-foreground">
                   Verification did not meet requirements
                 </h3>
                 <p className="max-w-[400px] text-sm text-muted-foreground">
-                  Your Twitter account does not meet the 100+ followers requirement. You can still use your referral link, but won't receive the 30% AIR SP rebate benefit.
+                  Your X account does not meet the 100+ followers requirement. You can still use your referral link, but won't receive the 30% AIR SP rebate benefit.
                 </p>
               </div>
 
