@@ -32,10 +32,10 @@ export const GetStartedView = () => {
 
               <div className="space-y-5 text-balance">
                 <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl">
-                  Unlock 10% trading rebates on Aster
+                  Verify your Twitter account with over 100 followers to get 30% rebate in AIR SP for your Surfshark VPN purchase
                 </h1>
                 <p className="max-w-xl text-base text-white/80 sm:text-lg">
-                  Verify once with AIR credentials. Claim rewards instantly.
+                  Quick verification. Exclusive AIR rewards for Surfshark subscribers.
                 </p>
               </div>
 
@@ -45,9 +45,9 @@ export const GetStartedView = () => {
                     <ShieldCheck className="h-4 w-4 text-primary" />
                   </div>
                   <div className="space-y-1 text-sm">
-                    <p className="font-semibold text-white">Verifiable credentials</p>
+                    <p className="font-semibold text-white">Twitter Verification</p>
                     <p className="text-white/70">
-                      Powered by AIR Kit to validate eligibility without exposing your raw data.
+                      Verify your Twitter account and unlock 30% AIR SP rebate on every Surfshark VPN purchase.
                     </p>
                   </div>
                 </div>
@@ -56,9 +56,9 @@ export const GetStartedView = () => {
                     <ArrowRight className="h-4 w-4 text-primary" />
                   </div>
                   <div className="space-y-1 text-sm">
-                    <p className="font-semibold text-white">Instant trading perks</p>
+                    <p className="font-semibold text-white">Instant AIR Rewards</p>
                     <p className="text-white/70">
-                      Unlock a 10% rebate on Aster the moment your Ethos Tier is confirmed.
+                      30% of your Surfshark purchase amount will be airdropped to you in AIR SP tokens.
                     </p>
                   </div>
                 </div>

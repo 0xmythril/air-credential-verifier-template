@@ -32,6 +32,7 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
     if (shouldPreviewFailure) return "failure";
     return "initial";
   });
+  const [userAirAddress, setUserAirAddress] = useState<string | null>(null);
 
   useEffect(() => {
     let next: VerificationStatus = "initial";
@@ -44,6 +45,17 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
   const updateStatus = (nextStatus: VerificationStatus) => {
     setStatus(nextStatus);
     onStatusChange?.(nextStatus);
+  };
+
+  const buildReferralUrl = (airAddress: string | null): string => {
+    const baseUrl = "https://get.surfshark.net/aff_c";
+    const params = new URLSearchParams({
+      offer_id: "6",
+      aff_id: "4253",
+      url_id: "1925",
+      aff_unique1: airAddress || "",
+    });
+    return `${baseUrl}?${params.toString()}`;
   };
 
   const onContinue = async () => {
@@ -72,6 +84,10 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
 
         console.log("Verification result:", result);
 
+        // Extract AIR address from result
+        const address = result.address || result.airAddress || null;
+        setUserAirAddress(address);
+
         if (result.authStatus === "COMPLIANT") {
           updateStatus("success");
         } else {
@@ -88,6 +104,7 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
   };
 
   const isLoading = status === "loading" || !isInitialized;
+  const referralUrl = buildReferralUrl(userAirAddress);
 
   return (
     <div className="container max-w-3xl">
@@ -103,25 +120,25 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
 
               <div className="flex flex-col items-center gap-3 text-center">
                 <h3 className="text-2xl font-bold tracking-tight text-secondary-foreground">
-                  You are eligible for 10% rebate trading on Aster!
+                  Verified! Get 30% AIR SP rebate
                 </h3>
                 <p className="max-w-[360px] text-sm text-muted-foreground">
-                  Redeem your exclusive trading rebate and explore premium perks curated for verified members.
+                  Sign up with this link and we will send you 30% of your purchase airdropped to you in AIR SP
                 </p>
               </div>
 
               <Link
-                href={env.NEXT_PUBLIC_REFERRAL_URL}
+                href={referralUrl}
                 target="_blank"
                 rel="noreferrer"
                 className="group inline-flex w-full flex-col items-center gap-3 rounded-2xl border border-primary/40 bg-background/70 p-6 text-secondary-foreground transition hover:border-primary/80 hover:bg-background"
               >
                 <div className="flex w-full items-center justify-between text-lg font-semibold tracking-wide text-primary">
-                  <span>Claim your rebate</span>
+                  <span>Claim 30% rebate offer</span>
                   <ExternalLink className="h-5 w-5 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  Secure 10% back on your trading fees when you sign up through this referral portal.
+                  Sign up for Surfshark VPN and get 30% of your purchase in AIR SP tokens.
                 </p>
               </Link>
             </div>
@@ -134,23 +151,26 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
             <div className="relative flex flex-col items-center gap-6 px-10 py-12 text-secondary-foreground">
               <div className="flex flex-col items-center gap-3 text-center">
                 <h3 className="text-2xl font-bold tracking-tight text-secondary-foreground">
-                  Unfortunately you are not eligible for the 10% rebate trading on Aster.
+                  Verification did not meet requirements
                 </h3>
                 <p className="max-w-[400px] text-sm text-muted-foreground">
-                  Please make sure you have a greater than 500 Ethos Score and try again. If this is a mistake please re-issue your credential again.
+                  Your Twitter account does not meet the 100+ followers requirement. You can still use your referral link, but won't receive the 30% AIR SP rebate benefit.
                 </p>
               </div>
 
               <Link
-                href={env.NEXT_PUBLIC_ISSUER_URL}
+                href={referralUrl}
                 target="_blank"
                 rel="noreferrer"
                 className="group inline-flex w-full flex-col items-center gap-3 rounded-2xl border border-primary/40 bg-background/70 p-6 text-secondary-foreground transition hover:border-primary/80 hover:bg-background"
               >
                 <div className="flex w-full items-center justify-between text-lg font-semibold tracking-wide text-primary">
-                  <span>Re-issue my Ethos credential</span>
+                  <span>Sign up for Surfshark</span>
                   <ExternalLink className="h-5 w-5 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </div>
+                <p className="text-sm text-muted-foreground">
+                  Use your referral link (without AIR SP rebate)
+                </p>
               </Link>
             </div>
           </div>
@@ -167,7 +187,7 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
               <span className="pointer-events-none absolute inset-0 opacity-70 [animation:glowPulse_2.4s_ease-in-out_infinite]" />
               <span className="absolute inset-0 -translate-x-full animate-[shimmer_1.8s_infinite] bg-[linear-gradient(120deg,transparent,rgba(255,255,255,0.5),transparent)]" />
               <span className="relative flex items-center justify-center gap-2 text-base font-semibold uppercase tracking-wide">
-                {isLoading ? "Verifying" : "Verify eligibility"}
+                {isLoading ? "Verifying" : "Verify Twitter"}
                 {!isLoading && (
                   <span className="inline-block h-2 w-2 animate-ping rounded-full bg-white/80" />
                 )}
