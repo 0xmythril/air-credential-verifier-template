@@ -127,8 +127,12 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
           updateStatus("failure");
         }
       } catch (error) {
-        updateStatus("failure");
-        throw error;
+        // User closed modal or verification was cancelled - revert to initial state
+        // so they can retry by clicking the button again
+        updateStatus("initial");
+        if (process.env.NODE_ENV === "development") {
+          console.log("Verification cancelled by user, reverting to initial state");
+        }
       }
     } catch (error) {
       console.error(error);
