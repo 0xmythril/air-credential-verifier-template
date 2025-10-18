@@ -56,7 +56,7 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
         }
       } catch (error) {
         updateStatus("initial");
-        throw error;
+        return; // Return early instead of throwing, since user just closed the modal
       }
 
       try {
@@ -79,11 +79,11 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
           updateStatus("failure");
         }
       } catch (error) {
+        console.error("Verification error:", error);
         updateStatus("failure");
-        throw error;
       }
     } catch (error) {
-      console.error(error);
+      console.error("Unexpected error:", error);
     }
   };
 
