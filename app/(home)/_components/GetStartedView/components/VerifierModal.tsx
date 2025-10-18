@@ -13,7 +13,7 @@ type AuthTokenResponse = {
   authToken: string;
 };
 
-export type VerificationStatus = "success" | "error" | "loading" | "initial" | "failure";
+export type VerificationStatus = "success" | "error" | "loading" | "initial" | "failure" | "non-compliant";
 
 type VerifierModalProps = {
   onStatusChange?: (status: VerificationStatus) => void;
@@ -29,14 +29,14 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
     searchParams.get("previewFailure")?.toLowerCase() === "true";
   const [status, setStatus] = useState<VerificationStatus>(() => {
     if (shouldPreviewSuccess) return "success";
-    if (shouldPreviewFailure) return "failure";
+    if (shouldPreviewFailure) return "non-compliant";
     return "initial";
   });
 
   useEffect(() => {
     let next: VerificationStatus = "initial";
     if (shouldPreviewSuccess) next = "success";
-    if (shouldPreviewFailure) next = "failure";
+    if (shouldPreviewFailure) next = "non-compliant";
     setStatus(next);
     onStatusChange?.(next);
   }, [onStatusChange, shouldPreviewSuccess, shouldPreviewFailure]);
@@ -74,9 +74,12 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
 
         if (result.authStatus === "COMPLIANT") {
           updateStatus("success");
+        } else if (result.authStatus === "NON_COMPLIANT") {
+          // User doesn't meet verification requirements
+          updateStatus("non-compliant");
         } else {
-          // NON_COMPLIANT, PENDING, REVOKING, REVOKED, EXPIRED, NOT_FOUND
-          updateStatus("failure");
+          // Other statuses: PENDING, REVOKING, REVOKED, EXPIRED, NOT_FOUND
+          updateStatus("error");
         }
       } catch (error) {
         console.error("Verification error:", error);
@@ -98,7 +101,7 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
           console.log("User cancelled verification, resetting to initial state");
           updateStatus("initial");
         } else {
-          updateStatus("failure");
+          updateStatus("error");
         }
       }
     } catch (error) {
@@ -146,7 +149,7 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
             </div>
           </div>
         </div>
-      ) : status === "failure" ? (
+      ) : status === "non-compliant" ? (
         <div className="flex justify-center">
           <div className="relative w-full max-w-[520px] overflow-hidden rounded-[28px] border border-destructive/20 bg-gradient-to-br from-destructive/5 via-destructive/10 to-destructive/20 shadow-2xl">
             <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-destructive/30 blur-3xl" />
@@ -171,6 +174,30 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
                   <ExternalLink className="h-5 w-5 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
                 </div>
               </Link>
+            </div>
+          </div>
+        </div>
+      ) : status === "error" ? (
+        <div className="flex justify-center">
+          <div className="relative w-full max-w-[520px] overflow-hidden rounded-[28px] border border-destructive/20 bg-gradient-to-br from-destructive/5 via-destructive/10 to-destructive/20 shadow-2xl">
+            <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-destructive/30 blur-3xl" />
+            <div className="relative flex flex-col items-center gap-6 px-10 py-12 text-secondary-foreground">
+              <div className="flex flex-col items-center gap-3 text-center">
+                <h3 className="text-2xl font-bold tracking-tight text-secondary-foreground">
+                  Verification Error
+                </h3>
+                <p className="max-w-[400px] text-sm text-muted-foreground">
+                  We encountered an error while verifying your credentials. Please try again or contact support if the problem persists.
+                </p>
+              </div>
+
+              <Button
+                onClick={onContinue}
+                disabled={isLoading}
+                className="group inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-primary/40 bg-background/70 p-3 text-secondary-foreground transition hover:border-primary/80 hover:bg-background"
+              >
+                <span className="text-base font-semibold">Try Again</span>
+              </Button>
             </div>
           </div>
         </div>
