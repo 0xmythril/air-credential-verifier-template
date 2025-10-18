@@ -292,7 +292,7 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
               <span className="pointer-events-none absolute inset-0 opacity-70 [animation:glowPulse_2.4s_ease-in-out_infinite]" />
               <span className="absolute inset-0 -translate-x-full animate-[shimmer_1.8s_infinite] bg-[linear-gradient(120deg,transparent,rgba(255,255,255,0.5),transparent)]" />
               <span className="relative flex items-center justify-center gap-2">
-                {isLoading ? "Verifying..." : "Verify Me"}
+                {isLoading ? "Verifying..." : "Verify Eligibility"}
                 {!isLoading && (
                   <span className="inline-block h-2 w-2 animate-ping rounded-full bg-white/80" />
                 )}
