@@ -80,7 +80,26 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
         }
       } catch (error) {
         console.error("Verification error:", error);
-        updateStatus("failure");
+        // Check if this is a user cancellation, not an actual verification failure
+        let isCancelled = false;
+        
+        if (error instanceof Error) {
+          isCancelled = error.message.includes("USER_CANCELLED") || error.message.includes("User cancelled");
+        } else if (typeof error === "object" && error !== null) {
+          const err = error as any;
+          isCancelled = 
+            err.message?.includes("USER_CANCELLED") ||
+            err.message?.includes("User cancelled") ||
+            err.code === "USER_CANCELLED" ||
+            String(error).includes("USER_CANCELLED");
+        }
+        
+        if (isCancelled) {
+          console.log("User cancelled verification, resetting to initial state");
+          updateStatus("initial");
+        } else {
+          updateStatus("failure");
+        }
       }
     } catch (error) {
       console.error("Unexpected error:", error);
