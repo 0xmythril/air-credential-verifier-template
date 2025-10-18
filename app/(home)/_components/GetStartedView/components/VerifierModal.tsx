@@ -54,7 +54,7 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
         while (!airService.isLoggedIn) {
           await airService.login();
         }
-      } catch (error) {
+      } catch {
         updateStatus("initial");
         return; // Return early instead of throwing, since user just closed the modal
       }
@@ -89,10 +89,10 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
         if (error instanceof Error) {
           isCancelled = error.message.includes("USER_CANCELLED") || error.message.includes("User cancelled");
         } else if (typeof error === "object" && error !== null) {
-          const err = error as any;
+          const err = error as Record<string, unknown>;
           isCancelled = 
-            err.message?.includes("USER_CANCELLED") ||
-            err.message?.includes("User cancelled") ||
+            (err.message as string)?.includes("USER_CANCELLED") ||
+            (err.message as string)?.includes("User cancelled") ||
             err.code === "USER_CANCELLED" ||
             String(error).includes("USER_CANCELLED");
         }
