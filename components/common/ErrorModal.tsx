@@ -19,7 +19,7 @@ export function ErrorModal({ error, onRetry }: ErrorModalProps) {
   }, [onRetry]);
 
   return (
-    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 backdrop-blur-sm">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/85 backdrop-blur-sm">
       <div className="relative w-full max-w-[520px] overflow-hidden rounded-[28px] border border-destructive/20 bg-gradient-to-br from-destructive/5 via-destructive/10 to-destructive/20 shadow-2xl mx-4">
         <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-destructive/30 blur-3xl" />
         <div className="relative flex flex-col items-center gap-6 px-10 py-12 text-secondary-foreground">

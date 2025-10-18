@@ -9,6 +9,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { ErrorModal } from "@/components/common/ErrorModal";
 
 type AuthTokenResponse = {
   authToken: string;
@@ -34,6 +35,8 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
     return "initial";
   });
   const [userAirAddress, setUserAirAddress] = useState<string | null>(null);
+  const [timeoutError, setTimeoutError] = useState<Error | null>(null);
+  const VERIFICATION_TIMEOUT = 10000; // 10 seconds
 
   useEffect(() => {
     let next: VerificationStatus = "initial";
@@ -81,11 +84,21 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
           await axios.get<AuthTokenResponse>("/api/auth-token")
         ).data;
 
-        const result = await airService.verifyCredential({
-          authToken,
-          programId: env.NEXT_PUBLIC_VERIFIER_PROGRAM_ID,
-          redirectUrl: env.NEXT_PUBLIC_ISSUER_URL,
-        });
+        // Create a promise that rejects after timeout
+        const timeoutPromise = new Promise((_, reject) =>
+          setTimeout(() => {
+            reject(new Error("Verification timed out. Please check your connection and try again."));
+          }, VERIFICATION_TIMEOUT)
+        );
+
+        const result = await Promise.race([
+          airService.verifyCredential({
+            authToken,
+            programId: env.NEXT_PUBLIC_VERIFIER_PROGRAM_ID,
+            redirectUrl: env.NEXT_PUBLIC_ISSUER_URL,
+          }),
+          timeoutPromise,
+        ]);
 
         console.log("=== VERIFICATION RESULT ===");
         console.log("Full result object:", result);
@@ -127,11 +140,17 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
           updateStatus("failure");
         }
       } catch (error) {
-        // User closed modal or verification was cancelled - revert to initial state
-        // so they can retry by clicking the button again
-        updateStatus("initial");
-        if (process.env.NODE_ENV === "development") {
-          console.log("Verification cancelled by user, reverting to initial state");
+        // Check if it's a timeout error
+        if (error instanceof Error && error.message.includes("timed out")) {
+          setTimeoutError(error);
+          updateStatus("error");
+        } else {
+          // User closed modal or verification was cancelled - revert to initial state
+          // so they can retry by clicking the button again
+          updateStatus("initial");
+          if (process.env.NODE_ENV === "development") {
+            console.log("Verification cancelled by user, reverting to initial state");
+          }
         }
       }
     } catch (error) {
@@ -158,8 +177,19 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
     }
   }, [status, userAirAddress, referralUrl, shouldPreviewSuccess, shouldPreviewFailure]);
 
+  const handleRetryFromTimeout = () => {
+    setTimeoutError(null);
+    onContinue();
+  };
+
   return (
     <div className="container max-w-lg">
+      {timeoutError && (
+        <ErrorModal
+          error={timeoutError}
+          onRetry={handleRetryFromTimeout}
+        />
+      )}
       {status === "success" ? (
         <div className="flex justify-center">
           <div className="relative w-full overflow-hidden rounded-[32px] border border-primary/20 bg-gradient-to-br from-primary/5 via-primary/10 to-primary/20 text-primary-foreground shadow-2xl">
@@ -262,7 +292,7 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
               <span className="pointer-events-none absolute inset-0 opacity-70 [animation:glowPulse_2.4s_ease-in-out_infinite]" />
               <span className="absolute inset-0 -translate-x-full animate-[shimmer_1.8s_infinite] bg-[linear-gradient(120deg,transparent,rgba(255,255,255,0.5),transparent)]" />
               <span className="relative flex items-center justify-center gap-2">
-                {isLoading ? "Verifying..." : "Verify Credential"}
+                {isLoading ? "Verifying..." : "Verify Me"}
                 {!isLoading && (
                   <span className="inline-block h-2 w-2 animate-ping rounded-full bg-white/80" />
                 )}
