@@ -139,17 +139,19 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
   const referralUrl = buildReferralUrl(userAirAddress, status === "success");
   
   useEffect(() => {
-    console.clear();
-    console.log("%c╔════════════════════════════════════════╗", "color: #00AA00; font-weight: bold;");
-    console.log("%c║  REFERRAL URL - PREVIEW/DEBUG INFO    ║", "color: #00AA00; font-weight: bold;");
-    console.log("%c╚════════════════════════════════════════╝", "color: #00AA00; font-weight: bold;");
-    console.log("Status:", status);
-    console.log("AIR Address:", userAirAddress ? userAirAddress : "(null)");
-    console.log("Preview Mode:", shouldPreviewSuccess ? "SUCCESS" : shouldPreviewFailure ? "FAILURE" : "None");
-    console.log("%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━", "color: #00AA00;");
-    console.log("%cREFERRAL URL:", "font-weight: bold; color: #00AA00; font-size: 14px;");
-    console.log(referralUrl);
-    console.log("%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━", "color: #00AA00;");
+    if (process.env.NODE_ENV === "development") {
+      console.clear();
+      console.log("%c╔════════════════════════════════════════╗", "color: #00AA00; font-weight: bold;");
+      console.log("%c║  REFERRAL URL - PREVIEW/DEBUG INFO    ║", "color: #00AA00; font-weight: bold;");
+      console.log("%c╚════════════════════════════════════════╝", "color: #00AA00; font-weight: bold;");
+      console.log("Status:", status);
+      console.log("AIR Address:", userAirAddress ? userAirAddress : "(null)");
+      console.log("Preview Mode:", shouldPreviewSuccess ? "SUCCESS" : shouldPreviewFailure ? "FAILURE" : "None");
+      console.log("%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━", "color: #00AA00;");
+      console.log("%cREFERRAL URL:", "font-weight: bold; color: #00AA00; font-size: 14px;");
+      console.log(referralUrl);
+      console.log("%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━", "color: #00AA00;");
+    }
   }, [status, userAirAddress, referralUrl, shouldPreviewSuccess, shouldPreviewFailure]);
 
   return (
