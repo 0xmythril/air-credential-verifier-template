@@ -36,7 +36,7 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
   });
   const [userAirAddress, setUserAirAddress] = useState<string | null>(null);
   const [timeoutError, setTimeoutError] = useState<Error | null>(null);
-  const VERIFICATION_TIMEOUT = 10000; // 10 seconds
+  const VERIFICATION_TIMEOUT = 80000; // 80 seconds
 
   useEffect(() => {
     let next: VerificationStatus = "initial";
