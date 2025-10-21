@@ -192,7 +192,7 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
 
               <div className="flex flex-col items-center gap-4 text-center">
                 <h3 className="text-3xl font-bold tracking-tight text-secondary-foreground">
-                  You have earned 30% AIR SP
+                  You can earn 30% AIR SP
                 </h3>
                 <p className="text-base text-muted-foreground leading-relaxed">
                   Sign up with this link and we will send you 30% of your purchase airdropped to you in AIR SP tokens.
