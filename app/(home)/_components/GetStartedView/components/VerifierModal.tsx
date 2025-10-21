@@ -36,7 +36,7 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
   });
   const [userAirAddress, setUserAirAddress] = useState<string | null>(null);
   const [timeoutError, setTimeoutError] = useState<Error | null>(null);
-  const VERIFICATION_TIMEOUT = 80000; // 80 seconds
+  const VERIFICATION_TIMEOUT = 70000; // 70 seconds (verification can take up to 1 minute)
 
   useEffect(() => {
     let next: VerificationStatus = "initial";
@@ -84,21 +84,11 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
           await axios.get<AuthTokenResponse>("/api/auth-token")
         ).data;
 
-        // Create a promise that rejects after timeout
-        const timeoutPromise = new Promise((_, reject) =>
-          setTimeout(() => {
-            reject(new Error("Verification timed out. Please check your connection and try again."));
-          }, VERIFICATION_TIMEOUT)
-        );
-
-        const result = await Promise.race([
-          airService.verifyCredential({
-            authToken,
-            programId: env.NEXT_PUBLIC_VERIFIER_PROGRAM_ID,
-            redirectUrl: env.NEXT_PUBLIC_ISSUER_URL,
-          }),
-          timeoutPromise,
-        ]);
+        const result = await airService.verifyCredential({
+          authToken,
+          programId: env.NEXT_PUBLIC_VERIFIER_PROGRAM_ID,
+          redirectUrl: env.NEXT_PUBLIC_ISSUER_URL,
+        });
 
         console.log("=== VERIFICATION RESULT ===");
         console.log("Full result object:", result);
