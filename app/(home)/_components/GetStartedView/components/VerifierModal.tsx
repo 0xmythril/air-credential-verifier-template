@@ -124,7 +124,7 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
         console.log("Final extracted AIR address:", address);
         console.log("=== END VERIFICATION RESULT ===");
 
-        if (result.authStatus === "COMPLIANT") {
+        if (result.status?.toLowerCase() === "compliant") {
           updateStatus("success");
         } else {
           updateStatus("failure");
