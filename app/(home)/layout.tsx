@@ -1,5 +1,6 @@
 "use client";
 import { Header } from "@/components/common/Header";
+import { AnnouncementBar } from "@/components/common/AnnouncementBar";
 import { Toaster } from "@/components/ui/sonner";
 import dynamic from "next/dynamic";
 
@@ -18,6 +19,7 @@ export default function RootLayout({
   return (
     <>
       <Providers>
+        <AnnouncementBar />
         <Header />
 
         {children}

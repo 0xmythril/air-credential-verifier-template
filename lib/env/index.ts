@@ -22,6 +22,7 @@ export const env = createEnv({
     NEXT_PUBLIC_BUILD_ENV: z.enum(BUILD_ENV),
     NEXT_PUBLIC_THEME: z.enum(["light", "dark", "system"]),
     NEXT_PUBLIC_REFERRAL_URL: z.string().url(),
+    NEXT_PUBLIC_SHOW_BETA_ANNOUNCEMENT: z.enum(["true", "false"]).default("false"),
   },
   runtimeEnv: {
     NEXT_PUBLIC_PARTNER_ID: process.env.NEXT_PUBLIC_PARTNER_ID,
@@ -39,6 +40,7 @@ export const env = createEnv({
     NEXT_PUBLIC_BUILD_ENV: process.env.NEXT_PUBLIC_BUILD_ENV,
     NEXT_PUBLIC_THEME: process.env.NEXT_PUBLIC_THEME,
     NEXT_PUBLIC_REFERRAL_URL: process.env.NEXT_PUBLIC_REFERRAL_URL,
+    NEXT_PUBLIC_SHOW_BETA_ANNOUNCEMENT: process.env.NEXT_PUBLIC_SHOW_BETA_ANNOUNCEMENT,
     PARTNER_PRIVATE_KEY: process.env.PARTNER_PRIVATE_KEY,
     SIGNING_ALGORITHM: process.env.SIGNING_ALGORITHM,
   },
