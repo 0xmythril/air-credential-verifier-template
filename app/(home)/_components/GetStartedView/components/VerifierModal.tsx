@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { env } from "@/lib/env";
 import { useAirkit } from "@/lib/hooks/useAirkit";
 import axios from "axios";
-import { ExternalLink, Sparkles } from "lucide-react";
+import { ExternalLink, CheckCircle2, GraduationCap, BookOpen } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
@@ -61,7 +61,9 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
 
   const buildReferralUrl = (airAddress: string | null, isSuccess: boolean = false): string => {
     console.log("Building referral URL with AIR address:", airAddress, "isSuccess:", isSuccess);
-    const url = `${env.NEXT_PUBLIC_REFERRAL_URL}${airAddress || ""}&aff_unique2=${isSuccess ? "true" : "false"}`;
+    // Coursera-style affiliate URL format
+    const baseUrl = env.NEXT_PUBLIC_REFERRAL_URL || "https://www.coursera.org/";
+    const url = `${baseUrl}?affiliate_id=${airAddress || ""}&ref=air-verification&program=${env.NEXT_PUBLIC_VERIFIER_PROGRAM_ID}&eligible=${isSuccess ? "true" : "false"}`;
     console.log("Generated referral URL:", url);
     return url;
   };
@@ -182,20 +184,20 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
       )}
       {status === "success" ? (
         <div className="flex justify-center">
-          <div className="relative w-full overflow-hidden rounded-[32px] border border-primary/20 bg-gradient-to-br from-primary/5 via-primary/10 to-primary/20 text-primary-foreground shadow-2xl">
-            <div className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-primary/30 blur-3xl" />
-            <div className="relative flex flex-col items-center gap-8 px-8 py-16 text-secondary-foreground">
-              <div className="flex items-center gap-2 rounded-full border border-primary/40 bg-background/80 px-4 py-2 text-xs font-semibold uppercase tracking-[0.35em] text-primary/80 shadow-sm backdrop-blur">
-                <Sparkles className="h-4 w-4 animate-pulse" />
-                Verified
+          <div className="relative w-full overflow-hidden rounded-3xl border-2 border-purple-400/30 bg-gradient-to-br from-purple-600/20 via-indigo-600/20 to-pink-600/20 text-white shadow-2xl backdrop-blur">
+            <div className="pointer-events-none absolute -right-32 -top-32 h-96 w-96 rounded-full bg-purple-500/40 blur-3xl animate-pulse" />
+            <div className="relative flex flex-col items-center gap-8 px-8 py-16">
+              <div className="flex items-center gap-3 rounded-full border-2 border-purple-300/50 bg-gradient-to-r from-purple-500/20 to-indigo-500/20 px-6 py-3 text-sm font-bold uppercase tracking-wider text-purple-100 shadow-lg backdrop-blur">
+                <CheckCircle2 className="h-5 w-5 text-green-400" />
+                Verified & Eligible
               </div>
 
-              <div className="flex flex-col items-center gap-4 text-center">
-                <h3 className="text-3xl font-bold tracking-tight text-secondary-foreground">
-                  You can earn 30% AIR SP
+              <div className="flex flex-col items-center gap-5 text-center">
+                <h3 className="text-4xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-purple-200 to-pink-200">
+                  You're Ready to Learn!
                 </h3>
-                <p className="text-base text-muted-foreground leading-relaxed">
-                  Sign up with this link and we will send you 30% of your purchase airdropped to you in AIR SP tokens.
+                <p className="text-lg text-purple-100/90 leading-relaxed max-w-md">
+                  Get 25% off your first Coursera course. Click below to browse courses and apply your discount.
                 </p>
               </div>
 
@@ -203,14 +205,17 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
                 href={referralUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="group inline-flex w-full flex-col items-center gap-4 rounded-2xl border border-primary/40 bg-background/70 p-6 text-secondary-foreground transition hover:border-primary/80 hover:bg-background"
+                className="group inline-flex w-full flex-col items-center gap-4 rounded-2xl border-2 border-purple-400/40 bg-gradient-to-r from-purple-600 to-indigo-600 p-6 text-white transition-all hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/50"
               >
-                <div className="flex w-full items-center justify-between text-lg font-semibold tracking-wide text-primary">
-                  <span>Claim Your Reward</span>
-                  <ExternalLink className="h-5 w-5 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                <div className="flex w-full items-center justify-between text-xl font-bold">
+                  <span className="flex items-center gap-2">
+                    <GraduationCap className="h-6 w-6" />
+                    Browse Courses & Save 25%
+                  </span>
+                  <ExternalLink className="h-6 w-6 transition group-hover:translate-x-1 group-hover:-translate-y-1" />
                 </div>
-                <p className="text-sm text-muted-foreground">
-                  Get 30% of your Surfshark VPN purchase as AIR SP tokens
+                <p className="text-sm text-purple-100/90">
+                  Your discount will be applied automatically at checkout
                 </p>
               </Link>
             </div>
@@ -218,15 +223,15 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
         </div>
       ) : status === "failure" ? (
         <div className="flex justify-center">
-          <div className="relative w-full overflow-hidden rounded-[32px] border border-destructive/20 bg-gradient-to-br from-destructive/5 via-destructive/10 to-destructive/20 shadow-2xl">
-            <div className="pointer-events-none absolute -right-20 -top-20 h-72 w-72 rounded-full bg-destructive/30 blur-3xl" />
-            <div className="relative flex flex-col items-center gap-8 px-8 py-16 text-secondary-foreground">
-              <div className="flex flex-col items-center gap-4 text-center">
-                <h3 className="text-3xl font-bold tracking-tight text-secondary-foreground">
-                  Almost There
+          <div className="relative w-full overflow-hidden rounded-3xl border-2 border-orange-400/30 bg-gradient-to-br from-orange-600/20 via-amber-600/20 to-yellow-600/20 text-white shadow-2xl backdrop-blur">
+            <div className="pointer-events-none absolute -right-32 -top-32 h-96 w-96 rounded-full bg-orange-500/30 blur-3xl" />
+            <div className="relative flex flex-col items-center gap-8 px-8 py-16">
+              <div className="flex flex-col items-center gap-5 text-center">
+                <h3 className="text-4xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-orange-200 to-yellow-200">
+                  Keep Growing Your Network
                 </h3>
-                <p className="text-base text-muted-foreground leading-relaxed">
-                  Your X account does not meet the 100+ followers requirement. You can still sign up with your referral link and enjoy Surfshark VPN.
+                <p className="text-lg text-orange-100/90 leading-relaxed max-w-md">
+                  You need to follow 90+ people on X to unlock the discount. You can still explore Coursera's 7,000+ courses with your referral link.
                 </p>
               </div>
 
@@ -234,40 +239,43 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
                 href={referralUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="group inline-flex w-full flex-col items-center gap-4 rounded-2xl border border-primary/40 bg-background/70 p-6 text-secondary-foreground transition hover:border-primary/80 hover:bg-background"
+                className="group inline-flex w-full flex-col items-center gap-4 rounded-2xl border-2 border-orange-400/40 bg-gradient-to-r from-orange-600 to-amber-600 p-6 text-white transition-all hover:scale-105 hover:shadow-2xl hover:shadow-orange-500/50"
               >
-                <div className="flex w-full items-center justify-between text-lg font-semibold tracking-wide text-primary">
-                  <span>Sign Up for Surfshark</span>
-                  <ExternalLink className="h-5 w-5 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                <div className="flex w-full items-center justify-between text-xl font-bold">
+                  <span className="flex items-center gap-2">
+                    <BookOpen className="h-6 w-6" />
+                    Explore Courses
+                  </span>
+                  <ExternalLink className="h-6 w-6 transition group-hover:translate-x-1 group-hover:-translate-y-1" />
                 </div>
-                <p className="text-sm text-muted-foreground">
-                  Use your referral link (standard rewards apply)
+                <p className="text-sm text-orange-100/90">
+                  Browse courses and learn from top instructors
                 </p>
               </Link>
             </div>
           </div>
         </div>
       ) : (
-        <div className="flex flex-col w-full gap-6">
-          <div className="rounded-3xl flex flex-col items-center gap-8">
+        <div className="flex flex-col w-full gap-8">
+          <div className="rounded-3xl flex flex-col items-center gap-8 p-8 bg-gradient-to-br from-purple-500/10 to-indigo-500/10 border-2 border-purple-400/20 backdrop-blur">
             {/* Logo Partnership Display - ONLY in initial state */}
-            <div className="flex items-center gap-6">
-              <div className="h-20 w-20 flex items-center justify-center rounded-2xl bg-white/5 border border-white/10 p-3">
+            <div className="flex items-center gap-8">
+              <div className="h-24 w-24 flex items-center justify-center rounded-3xl bg-gradient-to-br from-purple-500/20 to-indigo-500/20 border-2 border-purple-400/30 p-4 shadow-lg">
                 <Image
                   src="/x-logo/logo.svg"
                   alt="X"
-                  width={30}
-                  height={30}
+                  width={40}
+                  height={40}
                   className="object-contain"
                 />
               </div>
-              <div className="text-4xl font-light text-white/30">+</div>
-              <div className="h-20 w-20 flex items-center justify-center rounded-2xl bg-white/5 border border-white/10 p-3">
+              <div className="text-5xl font-light text-purple-300/50">×</div>
+              <div className="h-24 w-24 flex items-center justify-center rounded-3xl bg-gradient-to-br from-orange-500/20 to-pink-500/20 border-2 border-orange-400/30 p-4 shadow-lg">
                 <Image
-                  src="/surfshark-logo/Surfshark_Symbol_Pos.svg"
-                  alt="Surfshark"
-                  width={64}
-                  height={64}
+                  src="/coursera-logo/coursera-logo.svg"
+                  alt="Coursera"
+                  width={72}
+                  height={72}
                   className="object-contain"
                 />
               </div>
@@ -277,14 +285,21 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
               size="lg"
               onClick={onContinue}
               disabled={isLoading}
-              className="relative w-full overflow-hidden border border-primary/50 bg-[linear-gradient(115deg,_rgba(59,130,246,0.95),_rgba(14,165,233,0.9))] text-white shadow-[0_18px_40px_-18px_rgba(56,189,248,0.8)] transition-transform hover:scale-[1.02] hover:shadow-[0_20px_45px_-18px_rgba(59,130,246,0.95)] disabled:opacity-50 h-14 text-base font-semibold"
+              className="relative w-full overflow-hidden border-2 border-purple-400/50 bg-gradient-to-r from-purple-600 via-indigo-600 to-pink-600 text-white shadow-[0_20px_50px_-12px_rgba(168,85,247,0.6)] transition-all hover:scale-[1.03] hover:shadow-[0_25px_60px_-12px_rgba(168,85,247,0.8)] disabled:opacity-50 h-16 text-lg font-bold"
             >
-              <span className="pointer-events-none absolute inset-0 opacity-70 [animation:glowPulse_2.4s_ease-in-out_infinite]" />
-              <span className="absolute inset-0 -translate-x-full animate-[shimmer_1.8s_infinite] bg-[linear-gradient(120deg,transparent,rgba(255,255,255,0.5),transparent)]" />
-              <span className="relative flex items-center justify-center gap-2">
-                {isLoading ? "Verifying..." : "Verify Eligibility"}
-                {!isLoading && (
-                  <span className="inline-block h-2 w-2 animate-ping rounded-full bg-white/80" />
+              <span className="pointer-events-none absolute inset-0 opacity-60 [animation:glowPulse_2.4s_ease-in-out_infinite]" />
+              <span className="absolute inset-0 -translate-x-full animate-[shimmer_1.8s_infinite] bg-[linear-gradient(120deg,transparent,rgba(255,255,255,0.4),transparent)]" />
+              <span className="relative flex items-center justify-center gap-3">
+                {isLoading ? (
+                  <>
+                    <span className="inline-block h-3 w-3 animate-spin rounded-full border-2 border-white border-t-transparent" />
+                    Verifying...
+                  </>
+                ) : (
+                  <>
+                    <GraduationCap className="h-5 w-5" />
+                    Verify to Get 25% Off
+                  </>
                 )}
               </span>
             </Button>

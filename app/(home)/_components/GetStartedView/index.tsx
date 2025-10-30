@@ -1,6 +1,6 @@
 import { DebuggingInfo, VerifierModal } from "./components";
 import type { VerificationStatus } from "./components";
-import { ShieldCheck, Sparkles, Zap } from "lucide-react";
+import { BookOpen, GraduationCap, Award } from "lucide-react";
 import { useState } from "react";
 
 export const GetStartedView = () => {
@@ -8,77 +8,85 @@ export const GetStartedView = () => {
   const showHero = status !== "success" && status !== "failure";
 
   return (
-    <div className="relative min-h-screen overflow-hidden bg-[#05060F] text-white">
+    <div className="relative min-h-screen overflow-hidden bg-gradient-to-br from-purple-950 via-indigo-950 to-blue-950 text-white">
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -left-20 top-10 h-72 w-72 rounded-full bg-primary/20 blur-3xl" />
-        <div className="absolute right-[-120px] top-1/2 h-80 w-80 -translate-y-1/2 rounded-full bg-blue-500/20 blur-3xl" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(255,255,255,0.12),_transparent_55%)]" />
+        <div className="absolute top-20 left-1/4 h-96 w-96 rounded-full bg-purple-500/30 blur-3xl animate-pulse" />
+        <div className="absolute bottom-20 right-1/4 h-96 w-96 rounded-full bg-indigo-500/30 blur-3xl animate-pulse delay-1000" />
+        <div className="absolute top-1/2 left-1/2 h-[500px] w-[500px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-orange-500/20 blur-3xl" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(139,92,246,0.15),_transparent_70%)]" />
       </div>
 
-      <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-6xl flex-col justify-center px-6 py-16 lg:px-12">
+      <div className="relative z-10 mx-auto flex min-h-screen w-full max-w-5xl flex-col items-center justify-center px-6 py-8">
         <div
           className={
             showHero
-              ? "grid items-center gap-16 lg:grid-cols-[1.2fr_1fr]"
-              : "flex justify-center"
+              ? "flex flex-col items-center gap-5 w-full"
+              : "flex justify-center w-full"
           }
         >
           {showHero && (
-            <div className="flex flex-col gap-10">
-              {/* Powered by AIR Badge */}
-              <div className="inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/5 px-4 py-2 text-xs font-semibold uppercase tracking-[0.35em] text-white/80 backdrop-blur w-fit">
-                <Sparkles className="h-4 w-4" />
-                Powered by AIR
+            <div className="flex flex-col items-center gap-4 text-center max-w-3xl w-full">
+              {/* Badge */}
+              <div className="inline-flex items-center gap-2 rounded-full border border-purple-400/30 bg-purple-500/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-purple-200 backdrop-blur">
+                <Award className="h-3 w-3" />
+                Exclusive Learning Offer
               </div>
 
               {/* Main Content */}
-              <div className="space-y-4">
-                <h1 className="text-6xl font-bold tracking-tight text-white lg:text-7xl">
-                  Earn 30% in AIR SP
+              <div className="space-y-2">
+                <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-purple-200 via-pink-200 to-orange-200">
+                  Get 25% Off Your First Course
                 </h1>
-                <p className="text-xl text-white/70 max-w-lg">
-                  Verify your X account and get instant AIR rewards on every Surfshark VPN purchase.
+                <p className="text-base md:text-lg text-purple-100/90 max-w-2xl mx-auto leading-snug">
+                  Verify your X account to unlock 25% off your first Coursera course
                 </p>
-                <p className="text-sm text-white/50 max-w-lg">
-                  Requires 100+ X followers to qualify for the full 30% rebate in AIR SP tokens.
+                <p className="text-xs text-purple-200/70 max-w-xl mx-auto">
+                  Must be following 90+ people on X to qualify
                 </p>
               </div>
 
-              {/* Benefits Cards */}
-              <div className="grid gap-4 sm:grid-cols-2 max-w-2xl">
-                <div className="flex items-start gap-4 rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur hover:border-white/20 transition">
-                  <div className="rounded-xl bg-blue-500/20 p-3 flex-shrink-0">
-                    <ShieldCheck className="h-6 w-6 text-blue-300" />
+              {/* Benefits Cards - Horizontal Layout */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 w-full max-w-2xl">
+                <div className="flex items-start gap-3 rounded-2xl border-2 border-purple-400/20 bg-gradient-to-r from-purple-500/10 to-indigo-500/10 p-4 backdrop-blur">
+                  <div className="rounded-xl bg-gradient-to-br from-purple-500 to-indigo-600 p-2.5 flex-shrink-0 shadow-lg">
+                    <GraduationCap className="h-5 w-5 text-white" />
                   </div>
-                  <div className="space-y-1">
-                    <p className="font-semibold text-white">Verified & Secure</p>
-                    <p className="text-white/60 text-sm">
-                      One-click verification powered by AIR credentials.
+                  <div className="text-left">
+                    <p className="font-bold text-sm text-white mb-0.5">7,000+ Courses</p>
+                    <p className="text-purple-100/70 text-xs leading-tight">
+                      Top universities and companies
                     </p>
                   </div>
                 </div>
-                <div className="flex items-start gap-4 rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur hover:border-white/20 transition">
-                  <div className="rounded-xl bg-blue-500/20 p-3 flex-shrink-0">
-                    <Zap className="h-6 w-6 text-blue-300" />
+                <div className="flex items-start gap-3 rounded-2xl border-2 border-orange-400/20 bg-gradient-to-r from-orange-500/10 to-pink-500/10 p-4 backdrop-blur">
+                  <div className="rounded-xl bg-gradient-to-br from-orange-500 to-pink-600 p-2.5 flex-shrink-0 shadow-lg">
+                    <BookOpen className="h-5 w-5 text-white" />
                   </div>
-                  <div className="space-y-1">
-                    <p className="font-semibold text-white">Instant Rewards</p>
-                    <p className="text-white/60 text-sm">
-                      30% airdropped as AIR SP after purchase.
+                  <div className="text-left">
+                    <p className="font-bold text-sm text-white mb-0.5">Instant Discount</p>
+                    <p className="text-orange-100/70 text-xs leading-tight">
+                      25% off first course
                     </p>
                   </div>
                 </div>
+              </div>
+
+              {/* Verify Button - Moved into hero section */}
+              <div className="flex justify-center w-full mt-2">
+                <VerifierModal onStatusChange={setStatus} />
               </div>
             </div>
           )}
 
-          <div className="flex justify-center lg:justify-start">
-            <VerifierModal onStatusChange={setStatus} />
-          </div>
+          {!showHero && (
+            <div className="flex justify-center w-full">
+              <VerifierModal onStatusChange={setStatus} />
+            </div>
+          )}
         </div>
 
         {showHero && (
-          <div className="mt-20 flex justify-center">
+          <div className="mt-16 flex justify-center">
             <DebuggingInfo />
           </div>
         )}
