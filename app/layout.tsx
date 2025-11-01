@@ -20,8 +20,8 @@ const poppins = Poppins({
   weight: ["400", "500", "600", "700"],
 });
 
-const siteName = env.NEXT_PUBLIC_SITE_NAME;
-const siteDescription = env.NEXT_PUBLIC_SITE_DESCRIPTION;
+const siteName = "AIR Verifier";
+const siteDescription = "Verify once and unlock trading rewards";
 const siteUrl = env.NEXT_PUBLIC_SITE_URL;
 
 export const metadata: Metadata = {

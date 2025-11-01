@@ -36,7 +36,6 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
   });
   const [userAirAddress, setUserAirAddress] = useState<string | null>(null);
   const [timeoutError, setTimeoutError] = useState<Error | null>(null);
-  const VERIFICATION_TIMEOUT = 70000; // 70 seconds (verification can take up to 1 minute)
 
   useEffect(() => {
     let next: VerificationStatus = "initial";
@@ -61,9 +60,14 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
 
   const buildReferralUrl = (airAddress: string | null, isSuccess: boolean = false): string => {
     console.log("Building referral URL with AIR address:", airAddress, "isSuccess:", isSuccess);
-    // Coursera-style affiliate URL format
-    const baseUrl = env.NEXT_PUBLIC_REFERRAL_URL || "https://www.coursera.org/";
-    const url = `${baseUrl}?affiliate_id=${airAddress || ""}&ref=air-verification&program=${env.NEXT_PUBLIC_VERIFIER_PROGRAM_ID}&eligible=${isSuccess ? "true" : "false"}`;
+    
+    // If referral URL is not set, redirect to referral-demo page
+    if (!env.NEXT_PUBLIC_REFERRAL_URL) {
+      return "/referral-demo";
+    }
+    
+    // Build referral URL with affiliate parameters
+    const url = `${env.NEXT_PUBLIC_REFERRAL_URL}?affiliate_id=${airAddress || ""}&ref=air-verification&program=${env.NEXT_PUBLIC_VERIFIER_PROGRAM_ID}&eligible=${isSuccess ? "true" : "false"}`;
     console.log("Generated referral URL:", url);
     return url;
   };
@@ -152,6 +156,7 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
 
   const isLoading = status === "loading" || !isInitialized;
   const referralUrl = buildReferralUrl(userAirAddress, status === "success");
+  const isInternalLink = referralUrl.startsWith("/");
   
   useEffect(() => {
     if (process.env.NODE_ENV === "development") {
@@ -194,7 +199,7 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
 
               <div className="flex flex-col items-center gap-5 text-center">
                 <h3 className="text-4xl font-extrabold tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-purple-200 to-pink-200">
-                  You're Ready to Learn!
+                  You&apos;re Ready to Learn!
                 </h3>
                 <p className="text-lg text-purple-100/90 leading-relaxed max-w-md">
                   Get 25% off your first Coursera course. Click below to browse courses and apply your discount.
@@ -203,19 +208,22 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
 
               <Link
                 href={referralUrl}
-                target="_blank"
-                rel="noreferrer"
+                {...(isInternalLink ? {} : { target: "_blank", rel: "noreferrer" })}
                 className="group inline-flex w-full flex-col items-center gap-4 rounded-2xl border-2 border-purple-400/40 bg-gradient-to-r from-purple-600 to-indigo-600 p-6 text-white transition-all hover:scale-105 hover:shadow-2xl hover:shadow-purple-500/50"
               >
                 <div className="flex w-full items-center justify-between text-xl font-bold">
                   <span className="flex items-center gap-2">
                     <GraduationCap className="h-6 w-6" />
-                    Browse Courses & Save 25%
+                    {isInternalLink ? "View Referral Page" : "Browse Courses & Save 25%"}
                   </span>
-                  <ExternalLink className="h-6 w-6 transition group-hover:translate-x-1 group-hover:-translate-y-1" />
+                  {!isInternalLink && (
+                    <ExternalLink className="h-6 w-6 transition group-hover:translate-x-1 group-hover:-translate-y-1" />
+                  )}
                 </div>
                 <p className="text-sm text-purple-100/90">
-                  Your discount will be applied automatically at checkout
+                  {isInternalLink
+                    ? "Redirecting to the referral page"
+                    : "Your discount will be applied automatically at checkout"}
                 </p>
               </Link>
             </div>
@@ -231,25 +239,28 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
                   Keep Growing Your Network
                 </h3>
                 <p className="text-lg text-orange-100/90 leading-relaxed max-w-md">
-                  You need to follow 90+ people on X to unlock the discount. You can still explore Coursera's 7,000+ courses with your referral link.
+                  You need to follow 90+ people on X to unlock the discount. You can still explore Coursera&apos;s 7,000+ courses with your referral link.
                 </p>
               </div>
 
               <Link
                 href={referralUrl}
-                target="_blank"
-                rel="noreferrer"
+                {...(isInternalLink ? {} : { target: "_blank", rel: "noreferrer" })}
                 className="group inline-flex w-full flex-col items-center gap-4 rounded-2xl border-2 border-orange-400/40 bg-gradient-to-r from-orange-600 to-amber-600 p-6 text-white transition-all hover:scale-105 hover:shadow-2xl hover:shadow-orange-500/50"
               >
                 <div className="flex w-full items-center justify-between text-xl font-bold">
                   <span className="flex items-center gap-2">
                     <BookOpen className="h-6 w-6" />
-                    Explore Courses
+                    {isInternalLink ? "View Referral Page" : "Explore Courses"}
                   </span>
-                  <ExternalLink className="h-6 w-6 transition group-hover:translate-x-1 group-hover:-translate-y-1" />
+                  {!isInternalLink && (
+                    <ExternalLink className="h-6 w-6 transition group-hover:translate-x-1 group-hover:-translate-y-1" />
+                  )}
                 </div>
                 <p className="text-sm text-orange-100/90">
-                  Browse courses and learn from top instructors
+                  {isInternalLink
+                    ? "Redirecting to the referral page"
+                    : "Browse courses and learn from top instructors"}
                 </p>
               </Link>
             </div>
