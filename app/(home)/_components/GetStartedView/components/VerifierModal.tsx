@@ -8,19 +8,20 @@ import { ExternalLink, Sparkles } from "lucide-react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { ErrorModal } from "@/components/common/ErrorModal";
 
 type AuthTokenResponse = {
   authToken: string;
 };
 
-export type VerificationStatus = "success" | "error" | "loading" | "initial" | "failure" | "non-compliant";
+export type VerificationStatus = "success" | "error" | "loading" | "initial" | "failure";
 
 type VerifierModalProps = {
   onStatusChange?: (status: VerificationStatus) => void;
 };
 
 export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
-  const { airService, isInitialized } = useAirkit();
+  const { airService, isInitialized, isLoggedIn, loginResult } = useAirkit();
   const searchParams = useSearchParams();
   const shouldPreviewSuccess =
     searchParams.get("previewSuccess")?.toLowerCase() === "true" ||
@@ -29,21 +30,38 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
     searchParams.get("previewFailure")?.toLowerCase() === "true";
   const [status, setStatus] = useState<VerificationStatus>(() => {
     if (shouldPreviewSuccess) return "success";
-    if (shouldPreviewFailure) return "non-compliant";
+    if (shouldPreviewFailure) return "failure";
     return "initial";
   });
+  const [userAirAddress, setUserAirAddress] = useState<string | null>(null);
+  const [timeoutError, setTimeoutError] = useState<Error | null>(null);
 
   useEffect(() => {
     let next: VerificationStatus = "initial";
     if (shouldPreviewSuccess) next = "success";
-    if (shouldPreviewFailure) next = "non-compliant";
+    if (shouldPreviewFailure) next = "failure";
     setStatus(next);
     onStatusChange?.(next);
   }, [onStatusChange, shouldPreviewSuccess, shouldPreviewFailure]);
 
+  // Extract AIR address from login result if already logged in
+  useEffect(() => {
+    if (isLoggedIn && loginResult?.abstractAccountAddress) {
+      setUserAirAddress(loginResult.abstractAccountAddress);
+      console.log("Pre-populated AIR address from loginResult:", loginResult.abstractAccountAddress);
+    }
+  }, [isLoggedIn, loginResult]);
+
   const updateStatus = (nextStatus: VerificationStatus) => {
     setStatus(nextStatus);
     onStatusChange?.(nextStatus);
+  };
+
+  const buildReferralUrl = (airAddress: string | null, isSuccess: boolean = false): string => {
+    console.log("Building referral URL with AIR address:", airAddress, "isSuccess:", isSuccess);
+    const url = `${env.NEXT_PUBLIC_REFERRAL_URL}${airAddress || ""}&aff_unique2=${isSuccess ? "true" : "false"}`;
+    console.log("Generated referral URL:", url);
+    return url;
   };
 
   const onContinue = async () => {
@@ -54,9 +72,9 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
         while (!airService.isLoggedIn) {
           await airService.login();
         }
-      } catch {
+      } catch (error) {
         updateStatus("initial");
-        return; // Return early instead of throwing, since user just closed the modal
+        throw error;
       }
 
       try {
@@ -70,49 +88,96 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
           redirectUrl: env.NEXT_PUBLIC_ISSUER_URL,
         });
 
-        console.log("Verification result:", result);
+        console.log("=== VERIFICATION RESULT ===");
+        console.log("Full result object:", result);
+        console.log("Result keys:", Object.keys(result));
+        console.log("Result stringify:", JSON.stringify(result, null, 2));
 
-        if (result.authStatus === "COMPLIANT") {
-          updateStatus("success");
-        } else if (result.authStatus === "NON_COMPLIANT") {
-          // User doesn't meet verification requirements
-          updateStatus("non-compliant");
+        // Extract AIR address from result - try multiple possible property names
+        let address = null;
+        if (result.address) {
+          address = result.address;
+          console.log("Found address at result.address:", address);
+        } else if (result.airAddress) {
+          address = result.airAddress;
+          console.log("Found address at result.airAddress:", address);
+        } else if (result.walletAddress) {
+          address = result.walletAddress;
+          console.log("Found address at result.walletAddress:", address);
+        } else if (result.userAddress) {
+          address = result.userAddress;
+          console.log("Found address at result.userAddress:", address);
+        } else if (result.abstractAccountAddress) {
+          address = result.abstractAccountAddress;
+          console.log("Found address at result.abstractAccountAddress:", address);
+        } else if (result.user) {
+          address = result.user?.address || result.user?.airAddress;
+          console.log("Found address at result.user:", address);
         } else {
-          // Other statuses: PENDING, REVOKING, REVOKED, EXPIRED, NOT_FOUND
-          updateStatus("error");
+          console.warn("Could not find address property in result object");
+          console.warn("Available properties:", Object.keys(result));
+        }
+        
+        setUserAirAddress(address);
+        console.log("Final extracted AIR address:", address);
+        console.log("=== END VERIFICATION RESULT ===");
+
+        if (result.status?.toLowerCase() === "compliant") {
+          updateStatus("success");
+        } else {
+          updateStatus("failure");
         }
       } catch (error) {
-        console.error("Verification error:", error);
-        // Check if this is a user cancellation, not an actual verification failure
-        let isCancelled = false;
-        
-        if (error instanceof Error) {
-          isCancelled = error.message.includes("USER_CANCELLED") || error.message.includes("User cancelled");
-        } else if (typeof error === "object" && error !== null) {
-          const err = error as Record<string, unknown>;
-          isCancelled = 
-            (err.message as string)?.includes("USER_CANCELLED") ||
-            (err.message as string)?.includes("User cancelled") ||
-            err.code === "USER_CANCELLED" ||
-            String(error).includes("USER_CANCELLED");
-        }
-        
-        if (isCancelled) {
-          console.log("User cancelled verification, resetting to initial state");
-          updateStatus("initial");
-        } else {
+        // Check if it's a timeout error
+        if (error instanceof Error && error.message.includes("timed out")) {
+          setTimeoutError(error);
           updateStatus("error");
+        } else {
+          // User closed modal or verification was cancelled - revert to initial state
+          // so they can retry by clicking the button again
+          updateStatus("initial");
+          if (process.env.NODE_ENV === "development") {
+            console.log("Verification cancelled by user, reverting to initial state");
+          }
         }
       }
     } catch (error) {
-      console.error("Unexpected error:", error);
+      console.error(error);
     }
   };
 
   const isLoading = status === "loading" || !isInitialized;
+  const referralUrl = buildReferralUrl(userAirAddress, status === "success");
+  
+  useEffect(() => {
+    if (process.env.NODE_ENV === "development") {
+      console.clear();
+      console.log("%c╔════════════════════════════════════════╗", "color: #00AA00; font-weight: bold;");
+      console.log("%c║  REFERRAL URL - PREVIEW/DEBUG INFO    ║", "color: #00AA00; font-weight: bold;");
+      console.log("%c╚════════════════════════════════════════╝", "color: #00AA00; font-weight: bold;");
+      console.log("Status:", status);
+      console.log("AIR Address:", userAirAddress ? userAirAddress : "(null)");
+      console.log("Preview Mode:", shouldPreviewSuccess ? "SUCCESS" : shouldPreviewFailure ? "FAILURE" : "None");
+      console.log("%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━", "color: #00AA00;");
+      console.log("%cREFERRAL URL:", "font-weight: bold; color: #00AA00; font-size: 14px;");
+      console.log(referralUrl);
+      console.log("%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━", "color: #00AA00;");
+    }
+  }, [status, userAirAddress, referralUrl, shouldPreviewSuccess, shouldPreviewFailure]);
+
+  const handleRetryFromTimeout = () => {
+    setTimeoutError(null);
+    onContinue();
+  };
 
   return (
     <div className="container max-w-3xl">
+      {timeoutError && (
+        <ErrorModal
+          error={timeoutError}
+          onRetry={handleRetryFromTimeout}
+        />
+      )}
       {status === "success" ? (
         <div className="flex justify-center">
           <div className="relative w-full max-w-[520px] overflow-hidden rounded-[28px] border border-primary/20 bg-gradient-to-br from-primary/5 via-primary/10 to-primary/20 text-primary-foreground shadow-2xl">
@@ -133,7 +198,7 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
               </div>
 
               <Link
-                href={env.NEXT_PUBLIC_REFERRAL_URL}
+                href={referralUrl}
                 target="_blank"
                 rel="noreferrer"
                 className="group inline-flex w-full flex-col items-center gap-3 rounded-2xl border border-primary/40 bg-background/70 p-6 text-secondary-foreground transition hover:border-primary/80 hover:bg-background"
@@ -149,7 +214,7 @@ export function VerifierModal({ onStatusChange }: VerifierModalProps = {}) {
             </div>
           </div>
         </div>
-      ) : status === "non-compliant" ? (
+      ) : status === "failure" ? (
         <div className="flex justify-center">
           <div className="relative w-full max-w-[520px] overflow-hidden rounded-[28px] border border-destructive/20 bg-gradient-to-br from-destructive/5 via-destructive/10 to-destructive/20 shadow-2xl">
             <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-destructive/30 blur-3xl" />
